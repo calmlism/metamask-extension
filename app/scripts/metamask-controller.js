@@ -89,6 +89,10 @@ module.exports = class MetamaskController extends EventEmitter {
     // platform-specific api
     this.platform = opts.platform
 
+    this._getOpenMetaMaskTabs = opts.getOpenMetaMaskTabs
+    this._getOpenExternalTabs = opts.getOpenExternalTabsIDs
+    this._getTabIdOrigins = opts.getTabIdOrigins
+
     // observable state store
     this.store = new ComposableObservableStore(initState)
 
@@ -560,6 +564,10 @@ module.exports = class MetamaskController extends EventEmitter {
       getCaveat: permissionsController.getCaveat.bind(permissionsController),
       updateExposedAccounts: nodeify(permissionsController.updateExposedAccounts, permissionsController),
       legacyExposeAccounts: nodeify(permissionsController.legacyExposeAccounts, permissionsController),
+
+      getOpenMetaMaskTabs: (cb) => cb(null, this.getOpenMetaMaskTabs()),
+      getOpenExternalTabs: (cb) => cb(null, this.getOpenExternalTabs()),
+      getTabIdOrigins: (cb) => cb(null, this.getTabIdOrigins()),
     }
   }
 
@@ -1685,6 +1693,18 @@ module.exports = class MetamaskController extends EventEmitter {
   //=============================================================================
   // MISCELLANEOUS
   //=============================================================================
+
+  getOpenMetaMaskTabs () {
+    return this._getOpenMetaMaskTabs()
+  }
+
+  getOpenExternalTabs () {
+    return this._getOpenExternalTabs()
+  }
+
+  getTabIdOrigins () {
+    return this._getTabIdOrigins()
+  }
 
   /**
    * A method for estimating a good gas price at recent prices.
